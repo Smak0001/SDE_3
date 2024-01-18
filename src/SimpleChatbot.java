@@ -4,13 +4,17 @@ public class SimpleChatbot {
 
     private static SimpleChatbot instance;
 
-    private String greeting;
+    private ChatCommand greetingCommand;
+    private ChatCommand howAreYouCommand;
+    private ChatCommand defaultCommand;
     private String farewell;
 
     // Private constructor to prevent instantiation outside the class
     private SimpleChatbot() {
-        // Set default values
-        this.greeting = "Hello! How can I help you?";
+        // Set default commands
+        this.greetingCommand = new GreetingCommand();
+        this.howAreYouCommand = new HowAreYouCommand();
+        this.defaultCommand = new DefaultCommand();
         this.farewell = "Goodbye! Have a great day.";
     }
 
@@ -29,13 +33,18 @@ public class SimpleChatbot {
             this.chatbot = new SimpleChatbot();
         }
 
-        public Builder setGreeting(String greeting) {
-            chatbot.greeting = greeting;
+        public Builder setGreetingCommand(ChatCommand greetingCommand) {
+            chatbot.greetingCommand = greetingCommand;
             return this;
         }
 
-        public Builder setFarewell(String farewell) {
-            chatbot.farewell = farewell;
+        public Builder setHowAreYouCommand(ChatCommand howAreYouCommand) {
+            chatbot.howAreYouCommand = howAreYouCommand;
+            return this;
+        }
+
+        public Builder setDefaultCommand(ChatCommand defaultCommand) {
+            chatbot.defaultCommand = defaultCommand;
             return this;
         }
 
@@ -47,7 +56,7 @@ public class SimpleChatbot {
     public void startChat() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println(greeting);
+        System.out.println(greetingCommand.execute(null));
 
         while (true) {
             System.out.print("You: ");
@@ -66,20 +75,22 @@ public class SimpleChatbot {
     }
 
     private String getChatbotResponse(String userInput) {
-        // Simple logic for generating responses based on user input
+        // Use the appropriate command based on user input
         if (userInput.contains("hello") || userInput.contains("hi")) {
-            return "Hello! How can I help you?";
+            return greetingCommand.execute(userInput);
         } else if (userInput.contains("how are you")) {
-            return "I'm just a computer program, but thanks for asking!";
+            return howAreYouCommand.execute(userInput);
         } else {
-            return "I'm sorry, I don't understand. Can you please rephrase or ask something else?";
+            return defaultCommand.execute(userInput);
         }
     }
 
     public static void main(String[] args) {
+        // Use the Builder to set custom commands
         SimpleChatbot chatbot = new SimpleChatbot.Builder()
-                .setGreeting("Greetings! Welcome to the chat.")
-                .setFarewell("Goodbye! See you next time.")
+                .setGreetingCommand(new GreetingCommand())
+                .setHowAreYouCommand(new HowAreYouCommand())
+                .setDefaultCommand(new DefaultCommand())
                 .build();
 
         chatbot.startChat();
