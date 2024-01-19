@@ -1,0 +1,6 @@
+User input: null
+User input: I want your help
+User input: I want a friend
+User input: why not
+User input: hi
+User input: how are you

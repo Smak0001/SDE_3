@@ -197,3 +197,44 @@ The SimpleChatbot utilizes the Command design pattern to handle different types 
 <b>DefaultCommand:</b> Provides a default response for unrecognized inputs.
 
 The main class, SimpleChatbot, orchestrates the chatbot's behavior by using these command objects based on user input. The code is organized for flexibility, allowing easy extension with new commands.
+
+
+2. Decorator 
+
+
+    import java.io.FileWriter; 
+    import java.io.IOException;
+    import java.io.PrintWriter;
+
+    // Decorator class for logging user interactions
+    public class LoggingCommandDecorator implements ChatCommand {
+    private ChatCommand decoratedCommand;
+
+    // Specify the file path for the log
+    private String logFilePath = "chatbot_log.txt";
+
+    public LoggingCommandDecorator(ChatCommand decoratedCommand) {
+        this.decoratedCommand = decoratedCommand;
+    }
+
+    @Override
+    public String execute(String userInput) {
+        logInteraction(userInput);
+        return decoratedCommand.execute(userInput);
+    }
+
+    private void logInteraction(String userInput) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(logFilePath, true))) {
+            writer.println("User input: " + userInput);
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception according to your needs
+        }
+    }
+    }
+Explenation:
+In the LoggingCommandDecorator class, 
+This pattern allows behavior to be added to an object, 
+either statically or dynamically, without affecting the behavior
+of other objects from the same class. In our case, the LoggingCommandDecorator wraps 
+around a ChatCommand and adds logging behavior to it. This allows us to log user interactions
+while keeping the original ChatCommand classes unchanged.
