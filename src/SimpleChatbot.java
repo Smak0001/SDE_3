@@ -34,19 +34,20 @@ public class SimpleChatbot {
         }
 
         public Builder setGreetingCommand(ChatCommand greetingCommand) {
-            chatbot.greetingCommand = greetingCommand;
+            chatbot.greetingCommand = new LoggingCommandDecorator(greetingCommand);
             return this;
         }
 
         public Builder setHowAreYouCommand(ChatCommand howAreYouCommand) {
-            chatbot.howAreYouCommand = howAreYouCommand;
+            chatbot.howAreYouCommand = new LoggingCommandDecorator(howAreYouCommand);
             return this;
         }
 
         public Builder setDefaultCommand(ChatCommand defaultCommand) {
-            chatbot.defaultCommand = defaultCommand;
+            chatbot.defaultCommand = new LoggingCommandDecorator(defaultCommand);
             return this;
         }
+
 
         public SimpleChatbot build() {
             return chatbot;
