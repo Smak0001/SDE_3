@@ -2,6 +2,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+// Decorator class for logging user interactions
 public class LoggingCommandDecorator implements ChatCommand {
     private ChatCommand decoratedCommand;
 
