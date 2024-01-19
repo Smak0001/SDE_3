@@ -8,7 +8,7 @@ Even though we did a bunch of work together, there were also times when we each 
 
 
 <b>Creation design pattern</b>
-1. <b>Builder Class</b>
+1. <b>Builder design pattern</b>
 
 
       public static class Builder {
@@ -37,10 +37,49 @@ Even though we did a bunch of work together, there were also times when we each 
 This code represents the Builder class within the SimpleChatbot class, providing methods to set optional configurations (setGreeting and setFarewell) and a build method to create the final SimpleChatbot instance.
 
 <br>
-<b>Behavioural design pattern</b><br><br>
-1.  Command design pattern
 
-   1.1 ChatCommand.java
+2. <b>Singleton design pattern</b>
+
+        public class SimpleChatbot {
+        private static SimpleChatbot instance;
+
+        private ChatCommand greetingCommand; 
+        private ChatCommand howAreYouCommand;
+           private ChatCommand defaultCommand;
+           private String farewell;
+    
+       
+       private SimpleChatbot() {
+       
+       this.greetingCommand = new GreetingCommand();
+       this.howAreYouCommand = new HowAreYouCommand();
+       this.defaultCommand = new DefaultCommand();
+       this.farewell = "Goodbye! Have a great day.";
+       }
+    
+       public static SimpleChatbot getInstance() {
+       if (instance == null) {
+       instance = new SimpleChatbot();
+       }
+       return instance;
+       }
+
+        public static void main(String[] args) {
+        SimpleChatbot chatbot = SimpleChatbot.getInstance();
+
+        chatbot.startChat();
+         }
+
+<b>Explanation:</b><br>
+
+The SimpleChatbot class is designed following the Singleton Pattern. The Singleton Pattern ensures that a class has only one instance and provides a global point of access to that instance. In our program, the SimpleChatbot class has a private constructor, and the instance is created lazily in the getInstance method. This ensures that there is only one instance of the SimpleChatbot class throughout the application, allowing a centralized point for managing the chatbot.
+<br>
+
+<b>Behavioural design pattern</b><br><br>
+
+1. <b>Command design pattern</b>
+
+1.1 ChatCommand.java
    
    
       // ChatCommand interface
@@ -49,7 +88,7 @@ This code represents the Builder class within the SimpleChatbot class, providing
       String execute(String userInput);
       }
 
-   1.2 GreetingCommand.java
+1.2 GreetingCommand.java
 
         // GreetingCommand class
 
@@ -198,86 +237,7 @@ The SimpleChatbot utilizes the Command design pattern to handle different types 
 
 The main class, SimpleChatbot, orchestrates the chatbot's behavior by using these command objects based on user input. The code is organized for flexibility, allowing easy extension with new commands.
 
-
-2. Decorator 
-
-
-    import java.io.FileWriter; 
-    import java.io.IOException;
-    import java.io.PrintWriter;
-
-    // Decorator class for logging user interactions
-    public class LoggingCommandDecorator implements ChatCommand {
-    private ChatCommand decoratedCommand;
-
-    // Specify the file path for the log
-    private String logFilePath = "chatbot_log.txt";
-
-    public LoggingCommandDecorator(ChatCommand decoratedCommand) {
-        this.decoratedCommand = decoratedCommand;
-    }
-
-    @Override
-    public String execute(String userInput) {
-        logInteraction(userInput);
-        return decoratedCommand.execute(userInput);
-    }
-
-    private void logInteraction(String userInput) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(logFilePath, true))) {
-            writer.println("User input: " + userInput);
-        } catch (IOException e) {
-            e.printStackTrace(); // Handle the exception according to your needs
-        }
-    }
-    }
-Explenation:
-In the LoggingCommandDecorator class, 
-This pattern allows behavior to be added to an object, 
-either statically or dynamically, without affecting the behavior
-of other objects from the same class. In our case, the LoggingCommandDecorator wraps 
-around a ChatCommand and adds logging behavior to it. This allows us to log user interactions
-while keeping the original ChatCommand classes unchanged.
-
-3. Singleton
-
-        public class SimpleChatbot {
-        private static SimpleChatbot instance;
-
-        private ChatCommand greetingCommand; 
-        private ChatCommand howAreYouCommand;
-           private ChatCommand defaultCommand;
-           private String farewell;
-    
-       
-       private SimpleChatbot() {
-       
-       this.greetingCommand = new GreetingCommand();
-       this.howAreYouCommand = new HowAreYouCommand();
-       this.defaultCommand = new DefaultCommand();
-       this.farewell = "Goodbye! Have a great day.";
-       }
-    
-       public static SimpleChatbot getInstance() {
-       if (instance == null) {
-       instance = new SimpleChatbot();
-       }
-       return instance;
-       }
-
-        public static void main(String[] args) {
-        SimpleChatbot chatbot = SimpleChatbot.getInstance();
-
-        chatbot.startChat();
-   }
-
-explenation:
-
-The SimpleChatbot class is designed following the Singleton Pattern. The Singleton Pattern ensures that a class has only one instance and provides a global point of access to that instance. In our program, the SimpleChatbot class has a private constructor, and the instance is created lazily in the getInstance method. This ensures that there is only one instance of the SimpleChatbot class throughout the application, allowing a centralized point for managing the chatbot.
-
-
-
-4. strategy
+2. <b>strategy design pattern</b>
 
          // Context class that uses a strategy (ChatCommand)
          public class ChatbotContext {
@@ -390,13 +350,57 @@ SimpleChatbot.java
       }
 
 
-explenation:
+<b>explanation:</b>
 
-      The Strategy Pattern is implemented with the introduction of the ChatbotContext class. The ChatbotContext class represents the context that uses a strategy (ChatCommand). The strategy can be set dynamically, allowing the chatbot to execute different commands based on user input.
-      
-      Components of the Strategy Pattern:
-      Strategy Interface (ChatCommand): Defines the strategy interface, which is the ChatCommand interface in this case.
-      
-      Concrete Strategies (GreetingCommand, HowAreYouCommand, DefaultCommand): Concrete implementations of the ChatCommand interface represent different strategies that the chatbot can use.
-      
-      Context Class (ChatbotContext): The ChatbotContext class
+The Strategy Pattern is implemented with the introduction of the ChatbotContext class. The ChatbotContext class represents the context that uses a strategy (ChatCommand). The strategy can be set dynamically, allowing the chatbot to execute different commands based on user input.
+
+Components of the Strategy Pattern:
+Strategy Interface (ChatCommand): Defines the strategy interface, which is the ChatCommand interface in this case.
+
+Concrete Strategies (GreetingCommand, HowAreYouCommand, DefaultCommand): Concrete implementations of the ChatCommand interface represent different strategies that the chatbot can use.
+Context Class (ChatbotContext): The ChatbotContext class
+
+<br>
+<b>Structural design pattern</b><br><br>
+
+1. <b>Decorator design pattern</b>
+
+
+    import java.io.FileWriter; 
+    import java.io.IOException;
+    import java.io.PrintWriter;
+
+    // Decorator class for logging user interactions
+    public class LoggingCommandDecorator implements ChatCommand {
+    private ChatCommand decoratedCommand;
+
+    // Specify the file path for the log
+    private String logFilePath = "chatbot_log.txt";
+
+    public LoggingCommandDecorator(ChatCommand decoratedCommand) {
+        this.decoratedCommand = decoratedCommand;
+    }
+
+    @Override
+    public String execute(String userInput) {
+        logInteraction(userInput);
+        return decoratedCommand.execute(userInput);
+    }
+
+    private void logInteraction(String userInput) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(logFilePath, true))) {
+            writer.println("User input: " + userInput);
+        } catch (IOException e) {
+            e.printStackTrace(); // Handle the exception according to your needs
+        }
+    }
+    }
+
+<b>Explanation:</b><br>
+
+In the LoggingCommandDecorator class, 
+This pattern allows behavior to be added to an object, 
+either statically or dynamically, without affecting the behavior
+of other objects from the same class. In our case, the LoggingCommandDecorator wraps 
+around a ChatCommand and adds logging behavior to it. This allows us to log user interactions
+while keeping the original ChatCommand classes unchanged.

@@ -1,16 +1,20 @@
 import java.util.Scanner;
 
-// Singleton class for the chatbot
 public class SimpleChatbot {
 
     private static SimpleChatbot instance;
 
-    private ChatbotContext chatbotContext;
+    private ChatCommand greetingCommand;
+    private ChatCommand howAreYouCommand;
+    private ChatCommand defaultCommand;
     private String farewell;
 
     // Private constructor to prevent instantiation outside the class
-    private SimpleChatbot() {
-        this.chatbotContext = new ChatbotContext();
+    SimpleChatbot() {
+        // Set default commands
+        this.greetingCommand = new GreetingCommand();
+        this.howAreYouCommand = new HowAreYouCommand();
+        this.defaultCommand = new DefaultCommand();
         this.farewell = "Goodbye! Have a great day.";
     }
 
@@ -21,10 +25,22 @@ public class SimpleChatbot {
         return instance;
     }
 
+    public void setGreetingCommand(ChatCommand greetingCommand) {
+        this.greetingCommand = greetingCommand;
+    }
+
+    public void setHowAreYouCommand(ChatCommand howAreYouCommand) {
+        this.howAreYouCommand = howAreYouCommand;
+    }
+
+    public void setDefaultCommand(ChatCommand defaultCommand) {
+        this.defaultCommand = defaultCommand;
+    }
+
     public void startChat() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Hello! How can I help you?");
+        System.out.println(greetingCommand.execute(null));
 
         while (true) {
             System.out.print("You: ");
@@ -34,7 +50,7 @@ public class SimpleChatbot {
                 System.out.println(farewell);
                 break;
             } else {
-                String response = chatbotContext.executeCommand(userInput);
+                String response = getChatbotResponse(userInput);
                 System.out.println("Chatbot: " + response);
             }
         }
@@ -42,19 +58,25 @@ public class SimpleChatbot {
         scanner.close();
     }
 
-    public void setChatCommand(ChatCommand chatCommand) {
-        chatbotContext.setChatCommand(chatCommand);
+    private String getChatbotResponse(String userInput) {
+        // Use the appropriate command based on user input
+        if (userInput.contains("hello") || userInput.contains("hi")) {
+            return greetingCommand.execute(userInput);
+        } else if (userInput.contains("how are you")) {
+            return howAreYouCommand.execute(userInput);
+        } else {
+            return defaultCommand.execute(userInput);
+        }
     }
 
     public static void main(String[] args) {
-        // Use the Singleton pattern to get an instance of the chatbot
-        SimpleChatbot chatbot = SimpleChatbot.getInstance();
-
-        // Wrap the initial command with the LoggingCommandDecorator
-        ChatCommand initialCommand = new GreetingCommand();
-        chatbot.setChatCommand(new LoggingCommandDecorator(initialCommand));
-
-        // Start the chat
+        // Use ChatbotContext to set custom commands
+        SimpleChatbot chatbot = new ChatbotContext()
+                .setGreetingCommand(new GreetingCommand())
+                .setHowAreYouCommand(new HowAreYouCommand())
+                .setDefaultCommand(new DefaultCommand())
+                .build();
+    
         chatbot.startChat();
     }
 }

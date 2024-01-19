@@ -1,12 +1,26 @@
-// Context class that uses a strategy (ChatCommand)
 public class ChatbotContext {
-    private ChatCommand chatCommand;
+    private final SimpleChatbot chatbot;
 
-    public void setChatCommand(ChatCommand chatCommand) {
-        this.chatCommand = chatCommand;
+    public ChatbotContext() {
+        this.chatbot = new SimpleChatbot();
     }
 
-    public String executeCommand(String userInput) {
-        return chatCommand.execute(userInput);
+    public ChatbotContext setGreetingCommand(ChatCommand greetingCommand) {
+        chatbot.setGreetingCommand(greetingCommand);
+        return this;
+    }
+
+    public ChatbotContext setHowAreYouCommand(ChatCommand howAreYouCommand) {
+        chatbot.setHowAreYouCommand(howAreYouCommand);
+        return this;
+    }
+
+    public ChatbotContext setDefaultCommand(ChatCommand defaultCommand) {
+        chatbot.setDefaultCommand(defaultCommand);
+        return this;
+    }
+
+    public SimpleChatbot build() {
+        return chatbot;
     }
 }
