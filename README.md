@@ -265,3 +265,129 @@ while keeping the original ChatCommand classes unchanged.
 explenation:
 
 The SimpleChatbot class is designed following the Singleton Pattern. The Singleton Pattern ensures that a class has only one instance and provides a global point of access to that instance. In our program, the SimpleChatbot class has a private constructor, and the instance is created lazily in the getInstance method. This ensures that there is only one instance of the SimpleChatbot class throughout the application, allowing a centralized point for managing the chatbot.
+
+
+
+4. strategy
+
+         // Context class that uses a strategy (ChatCommand)
+         public class ChatbotContext {
+         private ChatCommand chatCommand;
+      
+       public void setChatCommand(ChatCommand chatCommand) {
+           this.chatCommand = chatCommand;
+       }
+   
+       public String executeCommand(String userInput) {
+           return chatCommand.execute(userInput);
+       }
+         }
+
+loggingCommandDecorator
+
+      import java.io.FileWriter;
+      import java.io.IOException;
+      import java.io.PrintWriter;
+      
+      // Decorator class for logging user interactions
+      public class LoggingCommandDecorator implements ChatCommand {
+      private ChatCommand decoratedCommand;
+      
+          // Specify the file path for the log
+          private String logFilePath = "chatbot_log.txt";
+      
+          public LoggingCommandDecorator(ChatCommand decoratedCommand) {
+              this.decoratedCommand = decoratedCommand;
+          }
+      
+          @Override
+          public String execute(String userInput) {
+              logInteraction(userInput);
+              return decoratedCommand.execute(userInput);
+          }
+      
+          private void logInteraction(String userInput) {
+              try (PrintWriter writer = new PrintWriter(new FileWriter(logFilePath, true))) {
+                  writer.println("User input: " + userInput);
+              } catch (IOException e) {
+                  e.printStackTrace(); // Handle the exception according to your needs
+              }
+          }
+      }
+
+SimpleChatbot.java
+
+      import java.util.Scanner;
+      
+      // Singleton class for the chatbot
+      public class SimpleChatbot {
+
+    private static SimpleChatbot instance;
+
+    private ChatbotContext chatbotContext;
+    private String farewell;
+
+    // Private constructor to prevent instantiation outside the class
+    private SimpleChatbot() {
+        this.chatbotContext = new ChatbotContext();
+        this.farewell = "Goodbye! Have a great day.";
+    }
+
+    public static SimpleChatbot getInstance() {
+        if (instance == null) {
+            instance = new SimpleChatbot();
+        }
+        return instance;
+    }
+
+    public void startChat() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Hello! How can I help you?");
+
+        while (true) {
+            System.out.print("You: ");
+            String userInput = scanner.nextLine();
+
+            if ("exit".equalsIgnoreCase(userInput)) {
+                System.out.println(farewell);
+                break;
+            } else {
+                String response = chatbotContext.executeCommand(userInput);
+                System.out.println("Chatbot: " + response);
+            }
+        }
+
+        scanner.close();
+    }
+
+    public void setChatCommand(ChatCommand chatCommand) {
+        chatbotContext.setChatCommand(chatCommand);
+    }
+
+    // Other methods...
+
+    public static void main(String[] args) {
+        // Use the Singleton pattern to get an instance of the chatbot
+        SimpleChatbot chatbot = SimpleChatbot.getInstance();
+
+        // Wrap the initial command with the LoggingCommandDecorator
+        ChatCommand initialCommand = new GreetingCommand();
+        chatbot.setChatCommand(new LoggingCommandDecorator(initialCommand));
+
+        // Start the chat
+        chatbot.startChat();
+    }
+      }
+
+
+explenation:
+
+      The Strategy Pattern is implemented with the introduction of the ChatbotContext class. The ChatbotContext class represents the context that uses a strategy (ChatCommand). The strategy can be set dynamically, allowing the chatbot to execute different commands based on user input.
+      
+      Components of the Strategy Pattern:
+      Strategy Interface (ChatCommand): Defines the strategy interface, which is the ChatCommand interface in this case.
+      
+      Concrete Strategies (GreetingCommand, HowAreYouCommand, DefaultCommand): Concrete implementations of the ChatCommand interface represent different strategies that the chatbot can use.
+      
+      Context Class (ChatbotContext): The ChatbotContext class
