@@ -1,5 +1,14 @@
-Creation design pattern
-1. Builder Class
+<b>
+Introduction
+</b><br><br>
+Jens and I, Xander, teamed up to finish our latest project together. We spent a lot of time working side by side, which is called pair programming. This helped us solve tough problems and come up with smart solutions because we could share our ideas as we went along.
+
+Even though we did a bunch of work together, there were also times when we each did things on our own. Some parts of the project needed special attention, so we split up to focus on them individually.
+
+By combining our teamwork and independent efforts, we made sure the project turned out really well. This collaboration not only improved our technical skills but also strengthened our working relationship. It was a successful experience that sets the stage for more teamwork in the future.
+
+<b>Creation design pattern</b>
+1. <b>Builder Class</b>
 
 
       public static class Builder {
@@ -24,11 +33,11 @@ Creation design pattern
       }
       }
 
-Explanation:
+<b>Explanation:</b><br>
 This code represents the Builder class within the SimpleChatbot class, providing methods to set optional configurations (setGreeting and setFarewell) and a build method to create the final SimpleChatbot instance.
 
 <br>
-Behavioural design pattern
+<b>Behavioural design pattern</b><br><br>
 1.  Command design pattern
 
    1.1 ChatCommand.java
@@ -177,14 +186,14 @@ Behavioural design pattern
     }
     }
 
-Explanation:
+<b>Explanation:</b>
 
 The SimpleChatbot utilizes the Command design pattern to handle different types of responses. Each response type (greeting, well-being inquiry, default response) is encapsulated in a separate command class implementing the ChatCommand interface.
 
-GreetingCommand: Responds with a greeting when the user input contains "hello" or "hi."
+<b>GreetingCommand:</b> Responds with a greeting when the user input contains "hello" or "hi."
 
-HowAreYouCommand: Responds to queries about well-being.
+<b>HowAreYouCommand:</b> Responds to queries about well-being.
 
-DefaultCommand: Provides a default response for unrecognized inputs.
+<b>DefaultCommand:</b> Provides a default response for unrecognized inputs.
 
 The main class, SimpleChatbot, orchestrates the chatbot's behavior by using these command objects based on user input. The code is organized for flexibility, allowing easy extension with new commands.
