@@ -222,3 +222,10 @@ The main class, SimpleChatbot, orchestrates the chatbot's behavior by using thes
         }
     }
     }
+Explenation:
+In the LoggingCommandDecorator class, 
+This pattern allows behavior to be added to an object, 
+either statically or dynamically, without affecting the behavior
+of other objects from the same class. In our case, the LoggingCommandDecorator wraps 
+around a ChatCommand and adds logging behavior to it. This allows us to log user interactions
+while keeping the original ChatCommand classes unchanged.
