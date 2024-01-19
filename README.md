@@ -229,3 +229,39 @@ either statically or dynamically, without affecting the behavior
 of other objects from the same class. In our case, the LoggingCommandDecorator wraps 
 around a ChatCommand and adds logging behavior to it. This allows us to log user interactions
 while keeping the original ChatCommand classes unchanged.
+
+3. Singleton
+
+        public class SimpleChatbot {
+        private static SimpleChatbot instance;
+
+        private ChatCommand greetingCommand; 
+        private ChatCommand howAreYouCommand;
+           private ChatCommand defaultCommand;
+           private String farewell;
+    
+       
+       private SimpleChatbot() {
+       
+       this.greetingCommand = new GreetingCommand();
+       this.howAreYouCommand = new HowAreYouCommand();
+       this.defaultCommand = new DefaultCommand();
+       this.farewell = "Goodbye! Have a great day.";
+       }
+    
+       public static SimpleChatbot getInstance() {
+       if (instance == null) {
+       instance = new SimpleChatbot();
+       }
+       return instance;
+       }
+
+        public static void main(String[] args) {
+        SimpleChatbot chatbot = SimpleChatbot.getInstance();
+
+        chatbot.startChat();
+   }
+
+explenation:
+
+The SimpleChatbot class is designed following the Singleton Pattern. The Singleton Pattern ensures that a class has only one instance and provides a global point of access to that instance. In our program, the SimpleChatbot class has a private constructor, and the instance is created lazily in the getInstance method. This ensures that there is only one instance of the SimpleChatbot class throughout the application, allowing a centralized point for managing the chatbot.
