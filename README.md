@@ -1,11 +1,11 @@
 <b>
 Introduction
 </b><br><br>
-Jens and I, Xander, teamed up to finish our latest project together. We spent a lot of time working side by side, which is called pair programming. This helped us solve tough problems and come up with smart solutions because we could share our ideas as we went along.
+Jens and I, Xander, teamed up to finish our latest project together. We spent a lot of time working by pair programming. This helped us solve problems and come up with different design patterns to implement.
 
 Even though we did a bunch of work together, there were also times when we each did things on our own. Some parts of the project needed special attention, so we split up to focus on them individually.
 
-By combining our teamwork and independent efforts, we made sure the project turned out really well. This collaboration not only improved our technical skills but also strengthened our working relationship. It was a successful experience that sets the stage for more teamwork in the future.
+
 
 <b>Creation design pattern</b>
 1. <b>Builder Class</b>
